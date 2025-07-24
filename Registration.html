@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Registration</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 800px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+        
+        .toggle-buttons {
+            display: flex;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .toggle-btn {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            background: #f9f9f9;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            color: #555;
+        }
+        
+        .toggle-btn.active {
+            background: white;
+            color: #6e8efb;
+            border-bottom: 3px solid #6e8efb;
+        }
+        
+        .toggle-btn:hover {
+            background: #eee;
+        }
+        
+        .form-container {
+            padding: 30px;
+        }
+        
+        .form {
+            display: none;
+        }
+        
+        .form.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #555;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+        
+        .form-group input:focus, .form-group select:focus {
+            border-color: #6e8efb;
+            outline: none;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #5d7de8, #9666d6);
+            transform: translateY(-2px);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #6e8efb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>User Registration</h1>
+        </div>
+        
+        <div class="toggle-buttons">
+            <div class="toggle-btn active" onclick="showForm('student')">Student</div>
+            <div class="toggle-btn" onclick="showForm('admin')">Admin</div>
+        </div>
+        
+        <div class="form-container">
+            <!-- Student Registration Form -->
+            <form id="student-form" class="form active" action="/register/student" method="POST">
+                <div class="form-group">
+                    <label for="student-name">Full Name</label>
+                    <input type="text" id="student-name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-email">Email Address</label>
+                    <input type="email" id="student-email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-id">Student ID</label>
+                    <input type="text" id="student-id" name="student_id" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-department">Department</label>
+                    <select id="student-department" name="department" required>
+                        <option value="">Select Department</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Arts">Arts</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-year">Year of Study</label>
+                    <select id="student-year" name="year" required>
+                        <option value="">Select Year</option>
+                        <option value="1">First Year</option>
+                        <option value="2">Second Year</option>
+                        <option value="3">Third Year</option>
+                        <option value="4">Fourth Year</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-password">Password</label>
+                    <input type="password" id="student-password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="student-confirm-password">Confirm Password</label>
+                    <input type="password" id="student-confirm-password" name="confirm_password" required>
+                </div>
+                
+                <button type="submit" class="submit-btn">Register as Student</button>
+            </form>
+            
+            <!-- Admin Registration Form -->
+            <form id="admin-form" class="form" action="/register/admin" method="POST">
+                <div class="form-group">
+                    <label for="admin-name">Full Name</label>
+                    <input type="text" id="admin-name" name="name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-email">Email Address</label>
+                    <input type="email" id="admin-email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-position">Position</label>
+                    <input type="text" id="admin-position" name="position" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-department">Department (if applicable)</label>
+                    <select id="admin-department" name="department">
+                        <option value="">Select Department (optional)</option>
+                        <option value="Computer Science">Computer Science</option>
+                        <option value="Electrical Engineering">Electrical Engineering</option>
+                        <option value="Mechanical Engineering">Mechanical Engineering</option>
+                        <option value="Business Administration">Business Administration</option>
+                        <option value="Administration">Administration</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-id">Admin ID</label>
+                    <input type="text" id="admin-id" name="admin_id" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-password">Password</label>
+                    <input type="password" id="admin-password" name="password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-confirm-password">Confirm Password</label>
+                    <input type="password" id="admin-confirm-password" name="confirm_password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="admin-code">Admin Registration Code</label>
+                    <input type="password" id="admin-code" name="admin_code" required placeholder="Enter special admin code">
+                </div>
+                
+                <button type="submit" class="submit-btn" href="index.html">Register as Admin</button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? <a href="/login">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showForm(formType) {
+            // Hide all forms
+            document.querySelectorAll('.form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Show the selected form
+            document.getElementById(formType + '-form').classList.add('active');
+            
+            // Update active toggle button
+            document.querySelectorAll('.toggle-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            event.currentTarget.classList.add('active');
+        }
+        
+        // Simple password confirmation check (you should add more robust validation)
+        document.getElementById('student-form').addEventListener('submit', function(e) {
+            const password = document.getElementById('student-password').value;
+            const confirmPassword = document.getElementById('student-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+        
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            const password = document.getElementById('admin-password').value;
+            const confirmPassword = document.getElementById('admin-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                alert('Passwords do not match!');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FSS Ibadan - Transcript System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo-container">
+            <img src="logo.png" alt="FSS Ibadan Logo" class="logo">
+            <div class="school-info">
+                <h1>Federal School of Statistics</h1>
+                <h2>Ibadan, Nigeria</h2>
+                <h3>Transcript Generating System</h3>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav class="sidebar">
+            <ul>
+                <li class="active"><a href="#dashboard"><i class="fas fa-home"></i> Dashboard</a></li>
+                <li><a href="#generate"><i class="fas fa-file-alt"></i> Generate Transcript</a></li>
+                <li><a href="#students"><i class="fas fa-users"></i> Student Records</a></li>
+                <li><a href="#courses"><i class="fas fa-book"></i> Course Management</a></li>
+                <li><a href="#settings"><i class="fas fa-cog"></i> Settings</a></li>
+                <li><a href="#logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </nav>
+
+        <main class="main-content">
+            <div id="dashboard" class="content-section active">
+                <h2>Dashboard</h2>
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <h3>Total Students</h3>
+                        <p id="total-students">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Transcripts Generated</h3>
+                        <p id="total-transcripts">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Pending Requests</h3>
+                        <p id="pending-requests">0</p>
+                    </div>
+                </div>
+                <div class="recent-activity">
+                    <h3>Recent Activity</h3>
+                    <ul id="activity-list">
+                        <!-- Will be populated by JavaScript -->
+                    </ul>
+                </div>
+            </div>
+
+            <div id="generate" class="content-section">
+                <h2>Generate Transcript</h2>
+                <div class="form-container">
+                    <form id="transcript-form">
+                        <div class="form-group">
+                            <label for="student-id">Student ID/Matric Number</label>
+                            <input type="text" id="student-id" name="student-id" required>
+                            <button type="button" id="search-student" class="btn-search"><i class="fas fa-search"></i> Search</button>
+                        </div>
+
+                        <div id="student-info" class="student-details" style="display: none;">
+                            <h3>Student Information</h3>
+                            <div class="info-grid">
+                                <div>
+                                    <p><strong>Full Name:</strong> <span id="student-name"></span></p>
+                                    <p><strong>Matric Number:</strong> <span id="student-matric"></span></p>
+                                    <p><strong>Department:</strong> <span id="student-dept"></span></p>
+                                </div>
+                                <div>
+                                    <p><strong>Program:</strong> <span id="student-program"></span></p>
+                                    <p><strong>Year of Admission:</strong> <span id="student-admission-year"></span></p>
+                                    <p><strong>Year of Graduation:</strong> <span id="student-graduation-year"></span></p>
+                                </div>
+                            </div>
+
+                            <h3>Academic Records</h3>
+                            <div class="table-container">
+                                <table id="grades-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Course Code</th>
+                                            <th>Course Title</th>
+                                            <th>Credit Unit</th>
+                                            <th>Grade</th>
+                                            <th>Session</th>
+                                            <th>Semester</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Will be populated by JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" id="generate-pdf" class="btn-primary"><i class="fas fa-file-pdf"></i> Generate PDF Transcript</button>
+                                <button type="button" id="preview-transcript" class="btn-secondary"><i class="fas fa-eye"></i> Preview Transcript</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div id="students" class="content-section">
+                <h2>Student Records</h2>
+                <div class="action-bar">
+                    <button id="add-student-btn" class="btn-primary"><i class="fas fa-plus"></i> Add New Student</button>
+                    <div class="search-box">
+                        <input type="text" id="student-search" placeholder="Search students...">
+                        <button id="student-search-btn"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="students-table">
+                        <thead>
+                            <tr>
+                                <th>Matric No.</th>
+                                <th>Full Name</th>
+                                <th>Department</th>
+                                <th>Program</th>
+                                <th>Admission Year</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination">
+                    <button id="prev-page"><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-info">Page 1 of 1</span>
+                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+            <div id="courses" class="content-section">
+                <h2>Course Management</h2>
+                <div class="action-bar">
+                    <button id="add-course-btn" class="btn-primary"><i class="fas fa-plus"></i> Add New Course</button>
+                    <div class="filter-options">
+                        <select id="dept-filter">
+                            <option value="">All Departments</option>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                        <select id="level-filter">
+                            <option value="">All Levels</option>
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table id="courses-table">
+                        <thead>
+                            <tr>
+                                <th>Course Code</th>
+                                <th>Course Title</th>
+                                <th>Credit Units</th>
+                                <th>Department</th>
+                                <th>Level</th>
+                                <th>Semester</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="settings" class="content-section">
+                <h2>System Settings</h2>
+                <div class="settings-tabs">
+                    <div class="tab-buttons">
+                        <button class="tab-btn active" data-tab="system-settings">System Settings</button>
+                        <button class="tab-btn" data-tab="user-management">User Management</button>
+                        <button class="tab-btn" data-tab="grading-system">Grading System</button>
+                    </div>
+                    <div class="tab-content active" id="system-settings">
+                        <form id="system-settings-form">
+                            <div class="form-group">
+                                <label for="school-name">School Name</label>
+                                <input type="text" id="school-name" name="school-name" value="Federal School of Statistics">
+                            </div>
+                            <div class="form-group">
+                                <label for="school-address">School Address</label>
+                                <textarea id="school-address" name="school-address">Ibadan, Nigeria</textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="transcript-fee">Transcript Fee (₦)</label>
+                                <input type="number" id="transcript-fee" name="transcript-fee" value="5000">
+                            </div>
+                            <div class="form-group">
+                                <label for="admin-email">Admin Email</label>
+                                <input type="email" id="admin-email" name="admin-email" value="registrar@fssibadan.edu.ng">
+                            </div>
+                            <button type="submit" class="btn-primary">Save Settings</button>
+                        </form>
+                    </div>
+                    <div class="tab-content" id="user-management">
+                        <div class="action-bar">
+                            <button id="add-user-btn" class="btn-primary"><i class="fas fa-plus"></i> Add New User</button>
+                        </div>
+                        <div class="table-container">
+                            <table id="users-table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Email</th>
+                                        <th>Role</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Will be populated by JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="grading-system">
+                        <form id="grading-system-form">
+                            <div class="form-group">
+                                <label>Grading Scale</label>
+                                <table class="grading-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Score Range</th>
+                                            <th>Grade</th>
+                                            <th>Grade Point</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>70 - 100</td>
+                                            <td><input type="text" name="grade_a" value="A"></td>
+                                            <td><input type="number" step="0.1" name="point_a" value="5.0"></td>
+                                            <td><input type="text" name="remark_a" value="Excellent"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>60 - 69</td>
+                                            <td><input type="text" name="grade_b" value="B"></td>
+                                            <td><input type="number" step="0.1" name="point_b" value="4.0"></td>
+                                            <td><input type="text" name="remark_b" value="Very Good"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>50 - 59</td>
+                                            <td><input type="text" name="grade_c" value="C"></td>
+                                            <td><input type="number" step="0.1" name="point_c" value="3.0"></td>
+                                            <td><input type="text" name="remark_c" value="Good"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>45 - 49</td>
+                                            <td><input type="text" name="grade_d" value="D"></td>
+                                            <td><input type="number" step="0.1" name="point_d" value="2.0"></td>
+                                            <td><input type="text" name="remark_d" value="Pass"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>0 - 44</td>
+                                            <td><input type="text" name="grade_f" value="F"></td>
+                                            <td><input type="number" step="0.1" name="point_f" value="0.0"></td>
+                                            <td><input type="text" name="remark_f" value="Fail"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-group">
+                                <label for="gpa-calculation">GPA Calculation Method</label>
+                                <select id="gpa-calculation" name="gpa-calculation">
+                                    <option value="standard">Standard (Sum of (Grade Points × Credit Units) / Total Credit Units)</option>
+                                    <option value="weighted">Weighted (Additional weights for higher levels)</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="btn-primary">Save Grading System</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modal-title">Add New Student</h2>
+            <form id="student-form">
+                <input type="hidden" id="student-id-edit">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="first-name">First Name</label>
+                        <input type="text" id="first-name" name="first-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="last-name">Last Name</label>
+                        <input type="text" id="last-name" name="last-name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="matric-number">Matric Number</label>
+                    <input type="text" id="matric-number" name="matric-number" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <select id="department" name="department" required>
+                        <!-- Will be populated by JavaScript -->
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="program">Program</label>
+                    <select id="program" name="program" required>
+                        <option value="ND">National Diploma (ND)</option>
+                        <option value="HND">Higher National Diploma (HND)</option>
+                        <option value="BSc">Bachelor of Science (BSc)</option>
+                    </select>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="admission-year">Admission Year</label>
+                        <input type="number" id="admission-year" name="admission-year" min="2000" max="2030" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="graduation-year">Graduation Year</label>
+                        <input type="number" id="graduation-year" name="graduation-year" min="2000" max="2030">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="student-status">Status</label>
+                    <select id="student-status" name="student-status">
+                        <option value="active">Active</option>
+                        <option value="graduated">Graduated</option>
+                        <option value="withdrawn">Withdrawn</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save</button>
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="course-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="course-modal-title">Add New Course</h2>
+            <form id="course-form">
+                <input type="hidden" id="course-id-edit">
+                <div class="form-group">
+                    <label for="course-code">Course Code</label>
+                    <input type="text" id="course-code" name="course-code" required>
+                </div>
+                <div class="form-group">
+                    <label for="course-title">Course Title</label>
+                    <input type="text" id="course-title" name="course-title" required>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="credit-units">Credit Units</label>
+                        <input type="number" id="credit-units" name="credit-units" min="1" max="6" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="course-level">Level</label>
+                        <select id="course-level" name="course-level" required>
+                            <option value="100">100 Level</option>
+                            <option value="200">200 Level</option>
+                            <option value="300">300 Level</option>
+                            <option value="400">400 Level</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="course-dept">Department</label>
+                        <select id="course-dept" name="course-dept" required>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="course-semester">Semester</label>
+                        <select id="course-semester" name="course-semester" required>
+                            <option value="1">First Semester</option>
+                            <option value="2">Second Semester</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save</button>
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="user-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="user-modal-title">Add New User</h2>
+            <form id="user-form">
+                <input type="hidden" id="user-id-edit">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-email">Email</label>
+                    <input type="email" id="user-email" name="user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="user-role">Role</label>
+                    <select id="user-role" name="user-role" required>
+                        <option value="admin">Administrator</option>
+                        <option value="registrar">Registrar</option>
+                        <option value="staff">Staff</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="user-password">Password</label>
+                    <input type="password" id="user-password" name="user-password">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save</button>
+                    <button type="button" class="btn-secondary close-modal">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="preview-modal" class="modal large-modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Transcript Preview</h2>
+            <div id="transcript-preview">
+                <!-- Transcript content will be inserted here -->
+            </div>
+            <div class="form-actions">
+                <button id="print-transcript" class="btn-primary"><i class="fas fa-print"></i> Print</button>
+                <button id="download-transcript" class="btn-secondary"><i class="fas fa-download"></i> Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirmation-modal" class="modal small-modal">
+        <div class="modal-content">
+            <h2 id="confirmation-title">Confirm Action</h2>
+            <p id="confirmation-message">Are you sure you want to perform this action?</p>
+            <div class="form-actions">
+                <button id="confirm-action" class="btn-danger">Confirm</button>
+                <button id="cancel-action" class="btn-secondary">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
